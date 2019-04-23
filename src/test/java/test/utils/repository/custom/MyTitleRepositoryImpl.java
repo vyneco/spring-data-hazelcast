@@ -16,6 +16,7 @@
 
 package test.utils.repository.custom;
 
+import com.hazelcast.core.HazelcastInstance;
 import org.springframework.data.hazelcast.repository.support.SimpleHazelcastRepository;
 import org.springframework.data.keyvalue.core.KeyValueOperations;
 import org.springframework.data.repository.core.EntityInformation;
@@ -36,8 +37,8 @@ public class MyTitleRepositoryImpl<T extends Serializable, ID extends Serializab
         extends SimpleHazelcastRepository<T, ID>
         implements MyTitleRepository<T, ID> {
 
-    public MyTitleRepositoryImpl(EntityInformation<T, ID> metadata, KeyValueOperations keyValueOperations) {
-        super(metadata, keyValueOperations);
+    public MyTitleRepositoryImpl(EntityInformation<T, ID> metadata, KeyValueOperations keyValueOperations, HazelcastInstance hazelcastInstance) {
+        super(metadata, keyValueOperations, hazelcastInstance);
     }
 
     /**

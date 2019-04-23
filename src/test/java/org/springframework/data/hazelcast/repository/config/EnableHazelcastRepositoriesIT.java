@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import test.utils.InstanceHelper;
 import test.utils.TestConstants;
 import test.utils.domain.Person;
+import test.utils.repository.mapstore.BookRepository;
 import test.utils.repository.standard.PersonRepository;
 
 import java.util.List;
@@ -55,6 +56,9 @@ public class EnableHazelcastRepositoriesIT {
     @Autowired
     PersonRepository repo;
 
+    @Autowired
+    BookRepository bookRepository;
+
     @Test
     public void shouldEnableKeyValueRepositoryCorrectly() {
 
@@ -68,6 +72,11 @@ public class EnableHazelcastRepositoriesIT {
 
         assertThat(result, hasSize(1));
         assertThat(result.get(0).getFirstname(), is("foo"));
+    }
+
+    @Test
+    public void shouldGenerateAMapBackedRepoCorrectly() {
+        assertThat(bookRepository, notNullValue());
     }
 
 }

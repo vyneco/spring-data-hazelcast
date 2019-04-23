@@ -21,6 +21,8 @@ import org.springframework.data.keyvalue.repository.query.SpelQueryCreator;
 import org.springframework.data.keyvalue.repository.support.KeyValueRepositoryFactory;
 import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.repository.core.EntityInformation;
+import org.springframework.data.repository.core.RepositoryInformation;
+import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
 import org.springframework.data.repository.query.parser.AbstractQueryCreator;
@@ -49,7 +51,7 @@ public class HazelcastRepositoryFactory
 
     private final KeyValueOperations keyValueOperations;
     private final Class<? extends AbstractQueryCreator<?, ?>> queryCreator;
-    private final HazelcastInstance hazelcastInstance;
+    protected final HazelcastInstance hazelcastInstance;
 
     /* Mirror functionality of super, to ensure private
      * fields are set.
@@ -69,6 +71,18 @@ public class HazelcastRepositoryFactory
         this.keyValueOperations = keyValueOperations;
         this.queryCreator = queryCreator;
         this.hazelcastInstance = hazelcastInstance;
+    }
+
+    @Override
+    protected Object getTargetRepository(RepositoryInformation repositoryInformation) {
+
+        EntityInformation<?, ?> entityInformation = getEntityInformation(repositoryInformation.getDomainType());
+        return super.getTargetRepositoryViaReflection(repositoryInformation, entityInformation, keyValueOperations, hazelcastInstance);
+    }
+
+    @Override
+    protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
+        return SimpleHazelcastRepository.class;
     }
 
     /**

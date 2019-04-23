@@ -58,7 +58,7 @@ public class MyTitleRepositoryFactory
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected Object getTargetRepository(RepositoryInformation repositoryInformation) {
         EntityInformation<?, Serializable> entityInformation = getEntityInformation(repositoryInformation.getDomainType());
-        return new MyTitleRepositoryImpl(entityInformation, this.keyValueOperations);
+        return new MyTitleRepositoryImpl(entityInformation, this.keyValueOperations, hazelcastInstance);
     }
 
     protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {

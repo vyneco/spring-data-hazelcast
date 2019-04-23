@@ -16,6 +16,7 @@
 
 package org.springframework.data.hazelcast.repository.support;
 
+import com.hazelcast.core.HazelcastInstance;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +32,9 @@ import test.utils.TestConstants;
 import test.utils.TestDataHelper;
 import test.utils.domain.Makeup;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -68,6 +60,9 @@ public class SimpleHazelcastRepositoryIT
     private SimpleHazelcastRepository<Makeup, String> theRepository;
 
     @Autowired
+    private HazelcastInstance hazelcastInstance;
+
+    @Autowired
     private KeyValueOperations keyValueOperations;
 
     @Before
@@ -75,7 +70,7 @@ public class SimpleHazelcastRepositoryIT
             throws Exception {
         ReflectionEntityInformation<Makeup, String> entityInformation = new ReflectionEntityInformation<>(Makeup.class);
 
-        this.theRepository = new SimpleHazelcastRepository<>(entityInformation, keyValueOperations);
+        this.theRepository = new SimpleHazelcastRepository<>(entityInformation, keyValueOperations, hazelcastInstance);
     }
 
     @Test
